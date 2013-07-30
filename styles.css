@@ -1,0 +1,9 @@
+.labels {
+	display: block;
+	float: left;
+	line-height: 1.63;
+	}
+	
+.labels label {
+	font-weight: bold;
+	}
