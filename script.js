@@ -7,6 +7,12 @@ window.onload = function(){
 format = function(x) {
 	return x[2]+"."+x[1]+'.'+x[0];
 }
+
+is_leap_year = function(x) {
+	if (x%400 === 0) {return True}
+	else if (x%4 === 0 && x%100 !===0) {return True}
+	else {return False}
+}
   
  $(document).on('click', "#submit", function() {
 	var start_string=$("#start_date").val().split('-');
@@ -27,14 +33,13 @@ format = function(x) {
 				alert("You MOOC "+$("#course_name").val()+" was added");
 			}
 			else {
+				var duration = $("#duration").val() * 7;
+				
 				alert("You are here");
 			}
 			$("#result").append("<div>"+new_course["course_name"]+" Starts: "+format(new_course["start_date"])+" Ends: "+format(new_course["end_date"])+"</div>");
-		
+			dataset.push(new_course);
 			}		
-		 
-		 if (new_course === {}) {
-		 alert("Empty");
 		 }
 	}
 	else {
