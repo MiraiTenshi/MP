@@ -11,19 +11,27 @@ format = function(x) {
 }
 
 function is_leap_year(year) {
-	if (year%400 === 0) {return True}
-	else if (year%4 === 0 && year%100 !==0) {return True}
-	else {return False}
+	if (year%400 === 0) {return true}
+	else if (year%4 === 0 && year%100 !==0) {return true}
+	else {return false}
 }
 
 function month_length(m, y) {
 	if (m===1 || m===3 || m===5 || m===7 || m===8 || m===10 || m===12){return 31}
 	else if (m===4 || m===6 || m===9 || m===11) {return 30}
 	else if (m===2){
-			if (is_leap_year(y)===True) {return 29}
+			if (is_leap_year(y)===true) {return 29}
 			else {return 28}
 	}
 	else {alert("Incorrect month value");}
+}
+
+function to_table(data) {
+	var result = '' 
+	for (var i=0; i<data.length; i++) {
+		result+="<tr><td>"+data[i].course_name+"</td><td>"+format(data[i].start_date)+"</td><td>"+format(data[i].end_date)+"</td></tr>";
+	}
+	return result
 }
   
  $(document).on('click', "#submit", function() {
@@ -37,7 +45,7 @@ function month_length(m, y) {
 		if ( $("#end_date").val() === '' && $("#duration").val() === '') {
 			alert("You haven't specified end of the course, please fix it!");
 		}
-		else if($("#duration").val() === '' && new Date(start_string[0],start_string[1]-1,start_string[2] )>= new Date(end_string[0], end_string[1]-1, end_string[2])) {
+		else if($("#duration").val() === '' && new Date(start_string[0],start_string[1]-1,start_string[2] )> new Date(end_string[0], end_string[1]-1, end_string[2])) {
 			alert("End date should be later than Start date");
 		}
 		else { 
@@ -46,7 +54,8 @@ function month_length(m, y) {
 			new_course["start_date"]=start_string; 
 			if ($("#end_date").val() !== '' && $("#end_date").val() !== $("#start_date").val()){
 				new_course["end_date"]=end_string;
-				alert("You MOOC "+$("#course_name").val()+" was added");
+				alert('You course: "'+$("#course_name").val()+'" was added');
+				document.getElementById("end_date").value='';
 			}
 			else {
 				var duration = $("#duration").val() * 7;
@@ -60,7 +69,6 @@ function month_length(m, y) {
 						duration = duration - (days - s_day + 1);
 						s_day = 1;
 						days = month_length(s_month, s_year);
-						alert(s_month);
 					}
 					else {
 						s_year += 1;
@@ -72,14 +80,14 @@ function month_length(m, y) {
 				}
 				s_day += duration;
 				new_course["end_date"] = [s_year, s_month, s_day];
-				alert("You MOOC "+$("#course_name").val()+" was added");
+				alert('You course: "'+$("#course_name").val()+'" was added');
+				document.getElementById("end_date").value='';
 			}
 
 			// alert(new Date(s_year, s_month-1, s_day));
 			// alert("Month length: "+ month_length(parseInt(new_course["start_date"][1]), parseInt(new_course["start_date"][0])));
 			// $("#result").append("<div>"+new_course["course_name"]+" Starts: "+format(new_course["start_date"])+" Ends: "+format(new_course["end_date"])+"</div>");
 			dataset.push(new_course);
-			// $("#result").append(dataset[0].course_name)
 			}
 		 }
 	else {
@@ -88,9 +96,18 @@ function month_length(m, y) {
 }) 
 
 $(document).on('click', "#show", function() {
-$("#result").append("<table><tr><th>Course name</th><th>Starts</th><th>Ends</th></tr>");
+	$("#result").empty();
+	$("#result").append("<table rules='all' cellpadding='4'><tr><th>Course name</th><th>Starts</th><th>Ends</th></tr>"+to_table(dataset)+"</table>");
+})
+$(document).on('click', "#today", function() {
+	$("#result").empty();
+	today_table =[];
 	for (var i=0; i<dataset.length; i++) {
-		$("#result").append("<tr><td>"+dataset[i].course_name+"</td><td>"+format(dataset[i].start_date)+"</td><td>"+format(dataset[i].end_date)+"</td></tr>");
+		if (new Date(dataset[i].start_date[0], dataset[i].start_date[1]-1, dataset[i].start_date[2])<=new Date() && new Date(dataset[i].end_date[0], dataset[i].end_date[1]-1, dataset[i].end_date[2])>=new Date()) {
+			// alert(new Date(dataset[i].start_date[0], dataset[i].start_date[1]-1, dataset[i].start_date[2])+" "+new Date());
+			today_table.push(dataset[i]);
+		}
 	}
-$("#result").append("</table>");	
+	// for (var i=0; i<today_table.length; i++) {alert(today_table[i].course_name);}
+	$("#result").append("<table rules='all' cellpadding='4'><tr><th>Course name</th><th>Starts</th><th>Ends</th></tr>"+to_table(today_table)+"</table>");
 })
