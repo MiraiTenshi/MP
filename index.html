@@ -11,7 +11,7 @@
 			<h1>Wellcome to MOOC Planner 1.0</h1>
 			<h3>Start adding your MOOCs below</h3>
 		</header>
-		<section id="add_form">
+		<section id="buttons">
 			<form id="adder">
 			<div class="labels">
 				<label for="course_name">Course name:</label><br>
@@ -24,15 +24,14 @@
 				<input id="course_name" name="course_name" type="text" required /><br>
 				<input id="start_date" name="start_date" type="date" required /><br>
 				<input id="end_date" name="end_date" type="date" /><br><br>
-				<input id="duration" name="duration" type="number" min="1" max="20" pattern="[0-9]{1,2}" /><span> weeks</span><br>
+				<input id="duration" name="duration" type="number" min="1" max="20" pattern="[0-9]{1,2}" /><span>&nbsp;weeks</span><br>
 				<input id="submit" onclick="addition()" type="button" value="Add course" />
-			</div>	
-				
+			</div>				
 			</form>
-		</section>
-		<section id="buttons">
-			<input id="show" type="button" value="Show my MOOCs"/><br>
-			<input id="today" type="button" value="What's on today?" />
+			<input id="show" type="button" value="Show all my courses"/><br><br>
+			<input id="today" type="button" value="What's on today?" /><br><br>
+			<input id="selected_date" name="selected_date" type="date" /><br>
+			<input id="this_day" type="button" value="Show courses for this date" />
 		</section>
 		<div id="result">
 		</div>
