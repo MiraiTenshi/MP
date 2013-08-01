@@ -29,7 +29,7 @@ function month_length(m, y) {
 function to_table(data) {
 	var result = "<table rules='all' cellpadding='4'><tr><th>Course name</th><th>Starts</th><th>Ends</th></tr>";
 	for (var i=0; i<data.length; i++) {
-		result+="<tr><td>"+data[i].course_name+"</td><td>"+format(data[i].start_date)+"</td><td>"+format(data[i].end_date)+"</td></tr>";
+		result+="<tr class='data'><td>"+data[i].course_name+"</td><td>"+format(data[i].start_date)+"</td><td>"+format(data[i].end_date)+"</td></tr>";
 	}
 	result+="</table>";
 	return result
@@ -108,7 +108,48 @@ $(document).on('click', "#today", function() {
 			today_table.push(dataset[i]);
 		}
 		// else {alert(new Date(dataset[i].start_date[0], dataset[i].start_date[1]-1, dataset[i].start_date[2])+" "+new Date());}
-	// }
+	}
 	// for (var i=0; i<today_table.length; i++) {alert(today_table[i].course_name);}
 	if (today_table.length !== 0) {$("#result").append(to_table(today_table))}
+})
+$(document).on('click', "#this_day", function() {
+	$("#result").empty();
+	this_day =[];
+	for (var i=0; i<dataset.length; i++) {
+	if (new Date(dataset[i].start_date[0], dataset[i].start_date[1]-1, dataset[i].start_date[2])<=new Date($("#selected_date").val()) && new Date(dataset[i].end_date[0], dataset[i].end_date[1]-1, dataset[i].end_date[2], 23)>=new Date($("#selected_date").val())) {
+			this_day.push(dataset[i]);
+		}
+	}
+	if (this_day.length !== 0) {$("#result").append(to_table(this_day))}	
+})
+
+$(document).on('click', "#view", function() {
+	$("h3").empty();
+	$("h3").append("Use elements below to view information abour you MOOCs");
+	$("#buttons").empty();
+	$("#buttons").append('<input id="show" type="button" value="Show all my courses"/><br><br><input id="today" type="button" value="Courses for today?" /><br><br><input id="selected_date" name="selected_date" type="date" /><br><input id="this_day" type="button" value="Show courses for this date" />');
+})
+
+$(document).on('click', '.data', function() {
+	$(this).addClass("clicked");
+	var code = $(".clicked").html();
+	for (var i=0; i<code.length; i++){
+		if (code[i] === ">") {
+			code = code.substr(i+1, code.length-1);
+			break
+		}
+	}
+	for (var i=0; i<code.length; i++){
+		if (code[i] === "<") {
+			code = code.substr(0, i);
+			break
+		}
+	}
+	for (var i=0; i<dataset.length; i++){
+		if (dataset[i].course_name === code) {
+			dataset.splice(i,1);
+			break
+		}
+	}
+	$(this).remove();
 })
