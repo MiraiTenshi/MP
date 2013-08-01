@@ -1,7 +1,28 @@
+#buttons {
+	float: left;
+}
+.clicked {
+	text-decoration: line-through;
+}
+
+#view {
+	margin-top: 60px;
+}
+
+#result {
+	float: left;
+	margin-left: 50px;
+	display: block;
+}
+
 .labels {
 	display: block;
 	float: left;
-	line-height: 1.63;
+	line-height: 1.7;
+	}
+.fields {
+	line-height: 1.7;
+	float: left;
 	}
 	
 .labels label {
